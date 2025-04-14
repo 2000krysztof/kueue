@@ -1034,3 +1034,8 @@ func GetListOptsFromLabel(label string) *client.ListOptions {
 		LabelSelector: selector,
 	}
 }
+
+func MustCreate(ctx context.Context, c client.Client, obj client.Object) {
+	ginkgo.GinkgoHelper()
+	gomega.ExpectWithOffset(1, c.Create(ctx, obj)).Should(gomega.Succeed())
+}
