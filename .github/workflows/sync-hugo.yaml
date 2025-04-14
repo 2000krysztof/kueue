@@ -23,5 +23,9 @@ jobs:
             - name: Run make sync-hugo-version
               run: |
                   make sync-hugo-version
+            - name: Commit commit changes
+              run: |
+                  add netlify.toml
+                  commit -m "Bump Hugo Version in netlify.toml"
               env:
                 GITHUB_TOKEN: ${{ secrets.GH_CLI_TOKEN }}
