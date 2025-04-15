@@ -1,7 +1,4 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
-# Test comment to see if this triggers the action
-# Test comment 2 to see if the new change is successfully commited after running
-# Test commenmt 3 to see if the new change is succesful
 name: Hugo Version Synchronizer
 
 on:
