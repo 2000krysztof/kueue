@@ -1,7 +1,4 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
-# Test comment to see if this triggers the action
-# Test comment 2 to see if the new change is successfully commited after running
-# Test commenmt 3 to see if the new change is succesful
 name: Hugo Version Synchronizer
 
 on:
@@ -25,8 +22,14 @@ jobs:
             - name: Run make sync-hugo-version
               run: |
                   make sync-hugo-version
-            - name: Commit changes
+            - name: Commit changes and push changes
               uses: devops-infra/action-commit-push@master
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   commit_message: Run make sync-hugo-version
+            - name: Create pull request
+              uses: devops-infra/action-pull-request@master
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  body: "**Automated pull request**<br><br>Replaced foo/bar"
+                  title: ${{ github.event.commits[0].message }}
