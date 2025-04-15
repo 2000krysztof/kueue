@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 jobs:
-    add-approve-lgtm-label:
+    run-sync-hugo-version:
         #if: ${{ github.actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependabot') }}
         runs-on: ubuntu-latest
 
@@ -25,9 +25,8 @@ jobs:
             - name: Run make sync-hugo-version
               run: |
                   make sync-hugo-version
-            - name: Commit commit changes
-              uses: devops-infra/action-pull-request@master
+            - name: Commit changes
+              uses: devops-infra/action-commit-push@master
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  body: "**Automated pull request**<br><br>Replaced foo/bar"
-                  title: ${{ github.event.commits[0].message }}
+                  commit_message: Run make sync-hugo-version
