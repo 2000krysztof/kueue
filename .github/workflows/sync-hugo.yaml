@@ -18,8 +18,7 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
-
+              uses: actions/checkout@main
             - name: Run make sync-hugo-version
               run: |
                   make sync-hugo-version
