@@ -1,5 +1,6 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
 # Test comment to see if this triggers the action
+# Test comment 2 to see if the new change is successfully commited after running
 name: Hugo Version Synchronizer
 
 on:
@@ -24,8 +25,8 @@ jobs:
               run: |
                   make sync-hugo-version
             - name: Commit commit changes
-              run: |
-                  add netlify.toml
-                  commit -m "Bump Hugo Version in netlify.toml"
-              env:
-                GITHUB_TOKEN: ${{ secrets.GH_CLI_TOKEN }}
+              uses: devops-infra/action-pull-request@master
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  body: "**Automated pull request**<br><br>Replaced foo/bar"
+                  title: ${{ github.event.commits[0].message }}
