@@ -1,4 +1,5 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
+# Test comment to trigger an action
 name: Hugo Version Synchronizer
 
 on:
@@ -13,7 +14,7 @@ jobs:
         # Permission required to edit a PR
         permissions:
           pull-requests: write
-          issues: write
+          contents: write
 
         steps:
             - uses: actions/checkout@v4
