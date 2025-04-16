@@ -1,4 +1,5 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
+# Test comment to trigger the github action
 name: Hugo Version Synchronizer
 
 on:
@@ -17,12 +18,13 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@main
-            - name: Run make sync-hugo-version
-              run: |
+              uses: actions/checkout@v4`
+              with: 
+                ref: ${{github.head_ref}}
+            - run: |
                   make sync-hugo-version
-            - name: Commit changes and push changes
-              uses: devops-infra/action-commit-push@master
-              with:
-                  github_token: ${{ secrets.PATH_TOKEN }}
-                  commit_message: Run make sync-hugo-version
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git commit -m "Bump Hugo version"
+                  git push
