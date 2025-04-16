@@ -1,5 +1,4 @@
 # This workflow runs the make sync-hugo-version command and alters the dependabot pr
-# test comment to trigger action
 name: Hugo Version Synchronizer
 
 on:
@@ -17,7 +16,7 @@ jobs:
           issues: write
 
         steps:
-            - uses: actions/checkout@v4`
+            - uses: actions/checkout@v4
               with: 
                 ref: ${{github.head_ref}}
             - run: |
