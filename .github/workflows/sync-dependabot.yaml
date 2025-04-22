@@ -1,5 +1,4 @@
 # This workflow syncs dependency versions for Dependabot PRs
-# Test comment
 name: Dependabot Version Sync
 
 on:
