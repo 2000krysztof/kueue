@@ -20,10 +20,11 @@ jobs:
               with: 
                 ref: ${{github.head_ref}}
             - name: sync hugo version
-            - run: |
+
+              run: |
                   make sync-hugo-version
             - name: commit and push the changes
-            - run: |
+              run: |
                 if ! git diff --exit-code; then
                       git config user.name "$(git log -1 --pretty=%an)"
                       git config user.email "$(git log -1 --pretty=%ae)"
