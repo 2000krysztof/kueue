@@ -90,18 +90,13 @@ var (
 
 func init() {
 	utilruntime.Must(jobframework.RegisterIntegration(FrameworkName, jobframework.IntegrationCallbacks{
-		SetupIndexes:           SetupIndexes,
-		NewJob:                 NewJob,
-		NewReconciler:          NewReconciler,
-		SetupWebhook:           SetupWebhook,
-		JobType:                &corev1.Pod{},
-		MultiKueueAdapter:      &multiKueueAdapter{},
-		IsManagingObjectsOwner: isPod,
+		SetupIndexes:      SetupIndexes,
+		NewJob:            NewJob,
+		NewReconciler:     NewReconciler,
+		SetupWebhook:      SetupWebhook,
+		JobType:           &corev1.Pod{},
+		MultiKueueAdapter: &multiKueueAdapter{},
 	}))
-}
-
-func isPod(ref *metav1.OwnerReference) bool {
-	return ref.Kind == "Pod" && ref.APIVersion == "v1"
 }
 
 // +kubebuilder:rbac:groups=scheduling.k8s.io,resources=priorityclasses,verbs=list;get;watch
@@ -345,6 +340,10 @@ func (p *Pod) RestorePodSetsInfo(_ []podset.PodSetInfo) bool {
 // Finished means whether the job is completed/failed or not,
 // condition represents the workload finished condition.
 func (p *Pod) Finished() (message string, success, finished bool) {
+	if p.isServing() {
+		return "", true, false
+	}
+
 	finished = true
 	success = true
 

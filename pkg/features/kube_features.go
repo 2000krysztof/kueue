@@ -116,18 +116,6 @@ const (
 	// all currently available ResourceFlavors for the LocalQueue.
 	ExposeFlavorsInLocalQueue featuregate.Feature = "ExposeFlavorsInLocalQueue"
 
-	// owner: @mszadkow
-	// kep: https://github.com/kubernetes-sigs/kueue/issues/3094
-	//
-	// Enable additional AdmissionCheck validation rules that will appear in status conditions.
-	AdmissionCheckValidationRules featuregate.Feature = "AdmissionCheckValidationRules"
-
-	// owner: @pbundyra
-	// kep: https://github.com/kubernetes-sigs/kueue/tree/main/keps/1136-provisioning-request-support
-	//
-	// Workloads keeps allocated quota and preserves QuotaReserved=True when ProvisioningRequest fails
-	KeepQuotaForProvReqRetry featuregate.Feature = "KeepQuotaForProvReqRetry"
-
 	// owner: @dgrove-oss
 	// kep: https://github.com/kubernetes-sigs/kueue/tree/main/keps/3589-manage-jobs-selectively
 	//
@@ -164,11 +152,11 @@ const (
 	// Enable to set use LeastAlloactedFit algorithm for TAS
 	TASProfileMixed featuregate.Feature = "TASProfileMixed"
 
-	// owner: @kannon92
+	// owner: @mwielgus
 	// kep: https://github.com/kubernetes-sigs/kueue/tree/main/keps/79-hierarchical-cohorts
 	//
-	// Enable hierarchical cohorts controller
-	HierarchialCohorts featuregate.Feature = "HierarchialCohorts"
+	// Enable hierarchical cohorts
+	HierarchicalCohorts featuregate.Feature = "HierarchicalCohorts"
 )
 
 func init() {
@@ -234,12 +222,6 @@ var defaultVersionedFeatureGates = map[featuregate.Feature]featuregate.Versioned
 	ExposeFlavorsInLocalQueue: {
 		{Version: version.MustParse("0.9"), Default: true, PreRelease: featuregate.Beta},
 	},
-	AdmissionCheckValidationRules: {
-		{Version: version.MustParse("0.9"), Default: false, PreRelease: featuregate.Deprecated},
-	},
-	KeepQuotaForProvReqRetry: {
-		{Version: version.MustParse("0.9"), Default: false, PreRelease: featuregate.Deprecated},
-	},
 	ManagedJobsNamespaceSelector: {
 		{Version: version.MustParse("0.10"), Default: true, PreRelease: featuregate.Beta},
 	},
@@ -258,8 +240,8 @@ var defaultVersionedFeatureGates = map[featuregate.Feature]featuregate.Versioned
 	TASProfileMixed: {
 		{Version: version.MustParse("0.11"), Default: false, PreRelease: featuregate.Deprecated},
 	},
-	HierarchialCohorts: {
-		{Version: version.MustParse("0.12"), Default: true, PreRelease: featuregate.Beta},
+	HierarchicalCohorts: {
+		{Version: version.MustParse("0.11"), Default: true, PreRelease: featuregate.Beta},
 	},
 }
 

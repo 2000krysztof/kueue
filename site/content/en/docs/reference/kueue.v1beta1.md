@@ -374,6 +374,24 @@ when this workloadPriorityClass should be used.</p>
 </tbody>
 </table>
 
+## `AdmissionCheckReference`     {#kueue-x-k8s-io-v1beta1-AdmissionCheckReference}
+    
+(Alias of `string`)
+
+**Appears in:**
+
+- [AdmissionCheckState](#kueue-x-k8s-io-v1beta1-AdmissionCheckState)
+
+- [AdmissionCheckStrategyRule](#kueue-x-k8s-io-v1beta1-AdmissionCheckStrategyRule)
+
+- [ClusterQueueSpec](#kueue-x-k8s-io-v1beta1-ClusterQueueSpec)
+
+
+<p>AdmissionCheckReference is the name of an AdmissionCheck.</p>
+
+
+
+
 ## `AdmissionCheckSpec`     {#kueue-x-k8s-io-v1beta1-AdmissionCheckSpec}
     
 
@@ -434,7 +452,7 @@ check.</p>
     
   
 <tr><td><code>name</code> <B>[Required]</B><br/>
-<code>string</code>
+<a href="#kueue-x-k8s-io-v1beta1-AdmissionCheckReference"><code>AdmissionCheckReference</code></a>
 </td>
 <td>
    <p>name identifies the admission check.</p>
@@ -516,7 +534,7 @@ current state.</p>
     
   
 <tr><td><code>name</code> <B>[Required]</B><br/>
-<code>string</code>
+<a href="#kueue-x-k8s-io-v1beta1-AdmissionCheckReference"><code>AdmissionCheckReference</code></a>
 </td>
 <td>
    <p>name is an AdmissionCheck's name.</p>
@@ -879,7 +897,7 @@ before borrowing or preempting in the flavor being evaluated.</p>
    <span class="text-muted">No description provided.</span></td>
 </tr>
 <tr><td><code>admissionChecks</code><br/>
-<code>[]string</code>
+<a href="#kueue-x-k8s-io-v1beta1-AdmissionCheckReference"><code>[]AdmissionCheckReference</code></a>
 </td>
 <td>
    <p>admissionChecks lists the AdmissionChecks required by this ClusterQueue.
@@ -1087,8 +1105,8 @@ above nominal quota to the lendable resources in the
 Cohort, among all the resources provided by the Node, and
 divided by the weight.  If zero, it means that the usage of
 the Node is below the nominal quota.  If the Node has a
-weight of zero, this will return 9223372036854775807, the
-maximum possible share value.</p>
+weight of zero and is borrowing, this will return
+9223372036854775807, the maximum possible share value.</p>
 </td>
 </tr>
 </tbody>

@@ -217,7 +217,7 @@ var _ = ginkgo.Describe("Topology Aware Scheduling", ginkgo.Ordered, func() {
 			clusterQueue = testing.MakeClusterQueue("cq").
 				ResourceGroup(
 					*testing.MakeFlavorQuotas(tasFlavor.Name).Resource(corev1.ResourceCPU, "5").Obj(),
-				).AdmissionChecks(admissionCheck.Name).Obj()
+				).AdmissionChecks(kueue.AdmissionCheckReference(admissionCheck.Name)).Obj()
 			util.MustCreate(ctx, k8sClient, clusterQueue)
 
 			gomega.Eventually(func(g gomega.Gomega) {
@@ -242,7 +242,7 @@ var _ = ginkgo.Describe("Topology Aware Scheduling", ginkgo.Ordered, func() {
 			clusterQueue = testing.MakeClusterQueue("cq").
 				ResourceGroup(
 					*testing.MakeFlavorQuotas(tasFlavor.Name).Resource(corev1.ResourceCPU, "5").Obj(),
-				).AdmissionChecks(admissionCheck.Name).Obj()
+				).AdmissionChecks(kueue.AdmissionCheckReference(admissionCheck.Name)).Obj()
 			util.MustCreate(ctx, k8sClient, clusterQueue)
 
 			gomega.Eventually(func(g gomega.Gomega) {
@@ -1459,6 +1459,9 @@ var _ = ginkgo.Describe("Topology validations", func() {
 			ginkgo.Entry("valid Topology",
 				testing.MakeDefaultOneLevelTopology("valid"),
 				gomega.Succeed()),
+			ginkgo.Entry("no levels",
+				testing.MakeTopology("no-levels").Obj(),
+				testing.BeInvalidError()),
 			ginkgo.Entry("invalid levels",
 				testing.MakeTopology("invalid-level").Levels("@invalid").Obj(),
 				testing.BeInvalidError()),

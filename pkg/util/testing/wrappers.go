@@ -810,7 +810,7 @@ func (c *ClusterQueueWrapper) ResourceGroup(flavors ...kueue.FlavorQuotas) *Clus
 }
 
 // AdmissionChecks replaces the queue additional checks
-func (c *ClusterQueueWrapper) AdmissionChecks(checks ...string) *ClusterQueueWrapper {
+func (c *ClusterQueueWrapper) AdmissionChecks(checks ...kueue.AdmissionCheckReference) *ClusterQueueWrapper {
 	c.Spec.AdmissionChecks = checks
 	return c
 }
@@ -1152,7 +1152,7 @@ type AdmissionCheckStrategyRuleWrapper struct {
 	kueue.AdmissionCheckStrategyRule
 }
 
-func MakeAdmissionCheckStrategyRule(name string, flavors ...kueue.ResourceFlavorReference) *AdmissionCheckStrategyRuleWrapper {
+func MakeAdmissionCheckStrategyRule(name kueue.AdmissionCheckReference, flavors ...kueue.ResourceFlavorReference) *AdmissionCheckStrategyRuleWrapper {
 	if len(flavors) == 0 {
 		flavors = make([]kueue.ResourceFlavorReference, 0)
 	}
@@ -1205,38 +1205,6 @@ func (ac *AdmissionCheckWrapper) Parameters(apigroup, kind, name string) *Admiss
 		Kind:     kind,
 		Name:     name,
 	}
-	return ac
-}
-
-func (ac *AdmissionCheckWrapper) SingleInstanceInClusterQueue(singleInstance bool, reason, message string, observedGeneration int64) *AdmissionCheckWrapper {
-	cond := metav1.Condition{
-		Type:               kueue.AdmissionChecksSingleInstanceInClusterQueue,
-		Status:             metav1.ConditionTrue,
-		Reason:             reason,
-		Message:            message,
-		ObservedGeneration: observedGeneration,
-	}
-	if !singleInstance {
-		cond.Status = metav1.ConditionFalse
-	}
-
-	apimeta.SetStatusCondition(&ac.Status.Conditions, cond)
-	return ac
-}
-
-func (ac *AdmissionCheckWrapper) ApplyToAllFlavors(applyToAllFlavors bool, reason, message string, observedGeneration int64) *AdmissionCheckWrapper {
-	cond := metav1.Condition{
-		Type:               kueue.FlavorIndependentAdmissionCheck,
-		Status:             metav1.ConditionTrue,
-		Reason:             reason,
-		Message:            message,
-		ObservedGeneration: observedGeneration,
-	}
-	if !applyToAllFlavors {
-		cond.Status = metav1.ConditionFalse
-	}
-
-	apimeta.SetStatusCondition(&ac.Status.Conditions, cond)
 	return ac
 }
 

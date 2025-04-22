@@ -47,6 +47,7 @@ import (
 	apimeta "k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/watch"
@@ -215,10 +216,11 @@ func deleteAllPodsInNamespace(ctx context.Context, c client.Client, ns *corev1.N
 }
 
 func ExpectAllPodsInNamespaceDeleted(ctx context.Context, c client.Client, ns *corev1.Namespace) {
+	ginkgo.GinkgoHelper()
 	pods := corev1.PodList{}
 	gomega.Eventually(func(g gomega.Gomega) {
-		g.ExpectWithOffset(1, c.List(ctx, &pods, client.InNamespace(ns.Name))).Should(gomega.Succeed())
-		g.ExpectWithOffset(1, pods.Items).Should(gomega.BeEmpty())
+		g.Expect(c.List(ctx, &pods, client.InNamespace(ns.Name))).Should(gomega.Succeed())
+		g.Expect(pods.Items).Should(gomega.BeEmpty())
 	}, LongTimeout, Interval).Should(gomega.Succeed())
 }
 
@@ -714,7 +716,7 @@ func SetAdmissionCheckActive(ctx context.Context, k8sClient client.Client, admis
 	}, Timeout, Interval).Should(gomega.Succeed())
 }
 
-func SetWorkloadsAdmissionCheck(ctx context.Context, k8sClient client.Client, wl *kueue.Workload, check string, state kueue.CheckState, expectExisting bool) {
+func SetWorkloadsAdmissionCheck(ctx context.Context, k8sClient client.Client, wl *kueue.Workload, check kueue.AdmissionCheckReference, state kueue.CheckState, expectExisting bool) {
 	var updatedWorkload kueue.Workload
 	gomega.EventuallyWithOffset(1, func(g gomega.Gomega) {
 		g.Expect(k8sClient.Get(ctx, client.ObjectKeyFromObject(wl), &updatedWorkload)).To(gomega.Succeed())
@@ -1038,4 +1040,10 @@ func GetListOptsFromLabel(label string) *client.ListOptions {
 func MustCreate(ctx context.Context, c client.Client, obj client.Object) {
 	ginkgo.GinkgoHelper()
 	gomega.ExpectWithOffset(1, c.Create(ctx, obj)).Should(gomega.Succeed())
+}
+
+func MustHaveOwnerReference(g gomega.Gomega, ownerRefs []metav1.OwnerReference, obj client.Object, scheme *runtime.Scheme) {
+	hasOwnerRef, err := controllerutil.HasOwnerReference(ownerRefs, obj, scheme)
+	g.Expect(err).ToNot(gomega.HaveOccurred())
+	g.Expect(hasOwnerRef).To(gomega.BeTrue())
 }

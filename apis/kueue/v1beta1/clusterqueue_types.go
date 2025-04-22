@@ -24,19 +24,17 @@ import (
 
 // ClusterQueue Active condition reasons.
 const (
-	ClusterQueueActiveReasonTerminating                                     = "Terminating"
-	ClusterQueueActiveReasonStopped                                         = "Stopped"
-	ClusterQueueActiveReasonFlavorNotFound                                  = "FlavorNotFound"
-	ClusterQueueActiveReasonAdmissionCheckNotFound                          = "AdmissionCheckNotFound"
-	ClusterQueueActiveReasonAdmissionCheckInactive                          = "AdmissionCheckInactive"
-	ClusterQueueActiveReasonMultipleSingleInstanceControllerAdmissionChecks = "MultipleSingleInstanceControllerAdmissionChecks"
-	ClusterQueueActiveReasonFlavorIndependentAdmissionCheckAppliedPerFlavor = "FlavorIndependentAdmissionCheckAppliedPerFlavor"
-	ClusterQueueActiveReasonMultipleMultiKueueAdmissionChecks               = "MultipleMultiKueueAdmissionChecks"
-	ClusterQueueActiveReasonMultiKueueAdmissionCheckAppliedPerFlavor        = "MultiKueueAdmissionCheckAppliedPerFlavor"
-	ClusterQueueActiveReasonNotSupportedWithTopologyAwareScheduling         = "NotSupportedWithTopologyAwareScheduling"
-	ClusterQueueActiveReasonTopologyNotFound                                = "TopologyNotFound"
-	ClusterQueueActiveReasonUnknown                                         = "Unknown"
-	ClusterQueueActiveReasonReady                                           = "Ready"
+	ClusterQueueActiveReasonTerminating                              = "Terminating"
+	ClusterQueueActiveReasonStopped                                  = "Stopped"
+	ClusterQueueActiveReasonFlavorNotFound                           = "FlavorNotFound"
+	ClusterQueueActiveReasonAdmissionCheckNotFound                   = "AdmissionCheckNotFound"
+	ClusterQueueActiveReasonAdmissionCheckInactive                   = "AdmissionCheckInactive"
+	ClusterQueueActiveReasonMultipleMultiKueueAdmissionChecks        = "MultipleMultiKueueAdmissionChecks"
+	ClusterQueueActiveReasonMultiKueueAdmissionCheckAppliedPerFlavor = "MultiKueueAdmissionCheckAppliedPerFlavor"
+	ClusterQueueActiveReasonNotSupportedWithTopologyAwareScheduling  = "NotSupportedWithTopologyAwareScheduling"
+	ClusterQueueActiveReasonTopologyNotFound                         = "TopologyNotFound"
+	ClusterQueueActiveReasonUnknown                                  = "Unknown"
+	ClusterQueueActiveReasonReady                                    = "Ready"
 )
 
 // CohortReference is the name of the Cohort.
@@ -106,7 +104,7 @@ type ClusterQueueSpec struct {
 	// admissionChecks lists the AdmissionChecks required by this ClusterQueue.
 	// Cannot be used along with AdmissionCheckStrategy.
 	// +optional
-	AdmissionChecks []string `json:"admissionChecks,omitempty"`
+	AdmissionChecks []AdmissionCheckReference `json:"admissionChecks,omitempty"`
 
 	// admissionCheckStrategy defines a list of strategies to determine which ResourceFlavors require AdmissionChecks.
 	// This property cannot be used in conjunction with the 'admissionChecks' property.
@@ -143,7 +141,7 @@ type AdmissionChecksStrategy struct {
 // AdmissionCheckStrategyRule defines rules for a single AdmissionCheck
 type AdmissionCheckStrategyRule struct {
 	// name is an AdmissionCheck's name.
-	Name string `json:"name"`
+	Name AdmissionCheckReference `json:"name"`
 
 	// onFlavors is a list of ResourceFlavors' names that this AdmissionCheck should run for.
 	// If empty, the AdmissionCheck will run for all workloads submitted to the ClusterQueue.
