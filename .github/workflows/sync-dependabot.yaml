@@ -20,6 +20,7 @@ jobs:
               with: 
                 ref: ${{github.head_ref}}
             - name: sync hugo version
+              if: ${{ contains(github.event.pull_request.title, 'hugo') }}
               run: |
                   make sync-hugo-version
             - name: commit and push the changes
